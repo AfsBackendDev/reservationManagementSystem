@@ -1,10 +1,16 @@
 name: publish
 on:
+  workflow_dispatch:
+      inputs:
+        example-input:
+          description: "An example input"
+          required: false
+          default: "default-value"
   push:
     branches:
       - main
 jobs:
-  preparation:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: sshpass install
@@ -16,10 +22,6 @@ jobs:
           mkdir -p ~/.ssh
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-  deploy:
-    runs-on: ubuntu-latest
-    needs: preparation
-    steps:
       - name: Deploy to vm of azure
         env:
             SSH_PASS: ${{ secrets.MY_PEM_KEY }}
