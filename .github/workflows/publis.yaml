@@ -2,8 +2,8 @@ name: publish
 on:
   workflow_dispatch:
       inputs:
-        example-input:
-          description: "An example input"
+        just-an-input:
+          description: "just an input"
           required: false
           default: "default-value"
   push:
@@ -20,8 +20,10 @@ jobs:
       - name: Set up SSH private key
         run: |
           mkdir -p ~/.ssh
-          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          echo "${{ secrets.MY_PEM_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.MY_PEM_KEY }}
       - name: Deploy to vm of azure
         env:
             SSH_PASS: ${{ secrets.MY_PEM_KEY }}
