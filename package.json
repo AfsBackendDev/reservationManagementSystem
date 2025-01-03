@@ -1,0 +1,34 @@
+{
+  "name": "reservationmanagementsystem",
+  "version": "1.0.0",
+  "description": "Backend application that allow users to register, search for avaible spaces, make reservations and manage them",
+  "main": "./app/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andres7854/reservationManagementSystem.git"
+  },
+  "keywords": [
+    "Management",
+    "System",
+    "Reservation",
+    "Backend"
+  ],
+  "author": "Andrés Felipe Sarmiento Niño",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/andres7854/reservationManagementSystem/issues"
+  },
+  "homepage": "https://github.com/andres7854/reservationManagementSystem#readme",
+  "type": "module",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.9.2",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
+  }
+}

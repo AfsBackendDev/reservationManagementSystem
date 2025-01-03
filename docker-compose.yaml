@@ -1,0 +1,18 @@
+services:
+  express_container:
+    build: .
+    ports:
+      - "3000:3001"
+    links:
+      - mongodb_container
+  mongodb_container:
+    image: mongo
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=password
+    volumes:
+      - rms_mongo_volume:/data/db
+volumes:
+  rms_mongo_volume:

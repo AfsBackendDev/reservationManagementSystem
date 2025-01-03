@@ -1,0 +1,24 @@
+services:
+  express_container:
+    build:
+      context: .
+      dockerfile: DockerFile.dev
+    ports:
+      - "3001:3001"
+    links:
+      - mongodb_container
+    environment:
+      - SECRET_KEY=asdfsdfvhgh1156165165dgdg616156
+    volumes:
+      - .:/home/app
+  mongodb_container:
+    image: mongo
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=password
+    volumes:
+      - rms_mongo_volume:/data/db
+volumes:
+  rms_mongo_volume:
