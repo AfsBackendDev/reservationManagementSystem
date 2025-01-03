@@ -32,7 +32,7 @@ jobs:
         run: |
           sudo ssh -t -o "StrictHostKeyChecking=no" -i ~/.ssh/id_rsa $SSH_USER@$SSH_HOST << 'EOF'
             cd reservationManagementSystem/
-            git pull origin inDev
-            sudo docker compose down --rmi all
+            git pull origin main
+            sudo docker compose down
             sudo docker compose up -d --build
           EOF
