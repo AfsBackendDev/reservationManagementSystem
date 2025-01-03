@@ -5,6 +5,8 @@ services:
       - "3000:3001"
     links:
       - mongodb_container
+    environment:
+    - SECRET_KEY=asdfsdfvhgh1156165165dgdg616156
   mongodb_container:
     image: mongo
     ports:
