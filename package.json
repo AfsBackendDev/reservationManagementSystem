@@ -1,6 +1,6 @@
 {
   "name": "reservationmanagementsystem",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Backend application that allow users to register, search for avaible spaces, make reservations and manage them",
   "main": "./app/index.js",
   "scripts": {

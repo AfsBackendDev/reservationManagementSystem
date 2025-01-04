@@ -31,3 +31,44 @@ export const User = mongoose.model('User', new mongoose.Schema({
         default: false
     }
 }));
+
+export const Space = mongoose.model('Space', new mongoose.Schema({
+    name: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    description: {
+        type: String,
+        required: false
+    },
+    capacity: {
+        type: Number,
+        required: true
+    },
+    availability: {
+        type: [{
+            date: {
+                type: Date,
+                required: true
+            },
+            start_HH: {
+                type: String,
+                required: true
+            },
+            start_MM: {
+                type: String,
+                required: true
+            },
+            end_HH: {
+                type: String,
+                required: true
+            },
+            end_MM: {
+                type: String,
+                required: true
+            }
+        }], 
+        default: []
+    }
+}));

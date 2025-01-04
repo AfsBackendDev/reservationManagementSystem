@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { User } from "./models.js";
+import { User, Space } from "./models.js";
 import { createToken, verifyToken } from "../tokens/tokenUtils.js";
 
 mongoose.connect('mongodb://root:password@mongodb_container:27017/miapp?authSource=admin');
@@ -13,7 +13,6 @@ mongoose.connect('mongodb://root:password@mongodb_container:27017/miapp?authSour
         }
         try {
             await User.create({ first_name, second_name, first_last_name, second_last_name, email, password, administrator });
-            return 'successfully registered';
         } catch (err) {
             console.log(err);
             const error = new Error("Server error: Error in the database");
@@ -83,5 +82,98 @@ mongoose.connect('mongodb://root:password@mongodb_container:27017/miapp?authSour
             }                
         } catch (err) {
             throw err;
+        }
+    }
+
+//SPACES FUNCTIONS
+
+    export async function createSpace(userToken = String, name = String, description = String, capacity = Number) {
+        try {
+            const decoded = verifyToken(userToken);
+            if (decoded.administrator == false) {
+                const error = new Error("Unauthorized: Only administrators can create spaces");
+                error.status = 401;
+                throw error;
+            }
+            if (capacity <= 0) {
+                const error = new Error("BadRequest: Capacity must be greater than 0");
+                error.status = 400;
+                throw error;
+            }
+            if (await Space.findOne({ name }) != null) {
+                const error = new Error("BadRequest: Space already exists");
+                error.status = 400;
+                throw error;
+            }
+            try {
+                await Space.create({ name, description, capacity });
+            } catch (err) {
+                const error = new Error("Server error: Error in the database");
+                error.status = 500;
+                throw error;    
+            }
+            return 'successfully created';
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    export async function getSpaces() {
+        try {
+            const spaces = await Space.find({});
+            if (spaces.length == 0) {
+                const error = new Error("NotFound: No spaces found");
+                error.status = 404;
+                throw error;
+            }
+            return spaces;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    export async function editSpace(userToken = String, spaceId = String, name = String, description = String, capacity = Number) {
+        try {
+            const decoded = verifyToken(userToken);
+            if (decoded.administrator == false) {
+                const error = new Error("Unauthorized: Only administrators can edit spaces");
+                error.status = 401;
+                throw error;
+            }
+            if (capacity <= 0) {
+                const error = new Error("BadRequest: Capacity must be greater than 0");
+                error.status = 400;
+                throw error;
+            }
+            try {
+                await Space.findById(spaceId);
+            } catch (err) {
+                const error = new Error("NotFound: Space not found");
+                error.status = 404;
+                throw error;
+            }
+            await Space.findByIdAndUpdate(spaceId, { name: name, description: description, capacity: capacity });
+        }catch (err) {
+            throw err;
+        }
+    }
+
+    export async function deleteSpace(userToken = String, spaceId = String) {
+        try {
+            const decoded = verifyToken(userToken);
+            if (decoded.administrator == false) {
+                const error = new Error("Unauthorized: Only administrators can delete spaces");
+                error.status = 401;
+                throw error;
+            }
+            try {
+                await Space.findByIdAndDelete(spaceId);
+            } catch (err) {
+                const error = new Error("NotFound: Space not found");
+                error.status = 404;
+                throw error;
+            }
+        } catch (err) {
+            throw err;   
         }
     }

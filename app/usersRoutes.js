@@ -39,7 +39,7 @@ export function setUsersRoutes() {
             const password = req.body.password;
             const administrator = req.body.administrator;
             await userRegister(first_name, second_name, first_last_name, second_last_name, email, password, administrator);
-            res.status(200).send('successfully registered');
+            res.status(200).send('OK: successfully registered');
         } catch (err) {
             console.log(err);
             res.status(err.status).send(err.message);   
@@ -155,7 +155,7 @@ export function setUsersRoutes() {
             const token = req.body.token;
             const emailOfUserToDelete = req.body.emailOfUserToDelete;
             await userDelete(token, emailOfUserToDelete);
-            res.status(200).send('successfully deleted user');
+            res.status(200).send('OK: successfully deleted user');
         } catch (err) {
             res.status(err.status).send(err.message);
         }

@@ -19,6 +19,10 @@ export function setDocs() {
                 {
                     name: '/spaces',
                     description: 'This endpoint manage al the information relationated with the spaces'
+                },
+                {
+                    name: '/reservations',
+                    description: 'This endpoint manage al the information relationated with the spaces'
                 }
             ],
             components:{
@@ -108,11 +112,70 @@ export function setDocs() {
                                 description: 'email of the user to delete'
                             }
                         }
+                    },
+                    spaceCreateBody:{
+                        type: 'object',
+                        properties:{
+                            userToken:{
+                                type: 'string',
+                                description: 'token of the administrator user'
+                            },
+                            name:{
+                                type: 'string',
+                                description: 'name of the space'
+                            },
+                            description:{
+                                type: 'string',
+                                description: 'description of the space'
+                            },
+                            capacity:{
+                                type: 'number',
+                                description: 'capacity of the space'
+                            }
+                        }
+                    },
+                    spaceEditBody:{
+                        type: 'object',
+                        properties:{
+                            userToken:{
+                                type: 'string',
+                                description: 'token of the administrator user'
+                            },
+                            spaceId:{
+                                type: 'string',
+                                description: 'id of the space'
+                            },
+                            name:{
+                                type: 'string',
+                                description: 'name of the space'
+                            },
+                            description:{
+                                type: 'string',
+                                description: 'description of the space'
+                            },
+                            capacity:{
+                                type: 'number',
+                                description: 'capacity of the space'
+                            }
+                        }
+                    },
+                    spaceDeleteBody:{
+                        type: 'object',
+                        properties:{
+                            userToken:{
+                                type: 'string',
+                                description: 'token of the administrator user'
+                            },
+                            spaceId:{
+                                type: 'string',
+                                description: 'id of the space'
+                            }
+                        }
                     }
                 }
             }
         },
-        apis: ['./app/usersRoutes.js']
+        apis: ['./app/usersRoutes.js', './app/spacesRoutes.js']
     };
     const rsmApiSpecification = swaggerJsdoc(options);
     app.use('/', swaggerUi.serve, swaggerUi.setup(rsmApiSpecification));
