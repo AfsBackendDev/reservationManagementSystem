@@ -10,7 +10,7 @@ services:
     environment:
       - SECRET_KEY=asdfsdfvhgh1156165165dgdg616156
     volumes:
-      - .:/home/app
+      - ./app:/home/app/app
   mongodb_container:
     image: mongo
     environment:

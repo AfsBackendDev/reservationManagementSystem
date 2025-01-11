@@ -1,5 +1,5 @@
-import { app } from "./index.js";
-import { userRegister, userLogin, getUsers, userDelete } from "./db/dbUtils.js";
+import { app } from "../index.js";
+import { userRegister, userLogin, getUsers, userDelete } from "../db/dbUtils.js";
 
 export function setUsersRoutes() {
     /**
@@ -106,6 +106,8 @@ export function setUsersRoutes() {
      *     responses:
      *       200:
      *         description: (OK) a list with all the users in the DB
+     *       400:
+     *          $ref: '#/components/responses/badRequest'
      *       401:
      *          $ref: '#/components/responses/unauthorized'  
      */

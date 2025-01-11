@@ -43,8 +43,7 @@ mongoose.connect('mongodb://root:password@mongodb_container:27017/miapp?authSour
                 email: user.email,
                 administrator: user.administrator
             };
-            const token = createToken(userWithoutPassword);
-            return token;
+            return createToken(userWithoutPassword); 
         } catch (err) {
             throw err;   
         }
@@ -175,5 +174,137 @@ mongoose.connect('mongodb://root:password@mongodb_container:27017/miapp?authSour
             }
         } catch (err) {
             throw err;   
+        }
+    }
+
+//RESERVATION FUNCTIONS
+
+    async function verifyOverlapping(spaceName, newStartDate, newEndDate, reservationId) {
+        if (newStartDate < new Date()) {
+            const error = new Error('BadRequest: the date cannot be less than the current date');
+            error.status = 400;
+            throw error;
+        }
+        if (newEndDate < newStartDate) {
+            const error = new Error('BadRequest: the end date cannot be less tha the start date');
+            error.status = 400;
+            throw error;
+        }
+        const space = await Space.findOne({ name: spaceName });
+        space.reservations.forEach(reservation => {
+            if (reservation._id != reservationId) {
+                const isOverlapping = (
+                    (newStartDate < reservation.startDate && newEndDate > reservation.startDate) ||
+                    (newEndDate > reservation.endDate && newStartDate < reservation.endDate) ||
+                    (newStartDate >= reservation.startDate && newEndDate <= reservation.endDate)
+                );
+                if (isOverlapping){
+                    const error = new Error('BadRequest: the selected date is overlapping with another reservation');
+                    error.status = 400;
+                    throw error;
+                }   
+            }
+        });
+    }
+
+    export async function createReservation(token = String, spaceName = String, startDate = String, endDate = String) {
+        try {
+            const decoded = verifyToken(token);
+            const space = await Space.findOne({ name: spaceName });
+            if (!space) {
+                const error = new Error("NotFound: Space not found");
+                error.status = 404;
+                throw error;
+            }
+            const newStartDate = new Date(startDate);
+            const newEndDate = new Date(endDate);
+            await verifyOverlapping(spaceName, newStartDate, newEndDate);
+            const newReservation = {
+                reservationHolder: `${decoded.first_name} ${decoded.second_name} ${decoded.first_last_name} ${decoded.second_last_name}`,
+                reservationHolderEmail: decoded.email,
+                startDate: new Date(startDate),
+                endDate: new Date(endDate)
+            }
+            space.reservations.push(newReservation);
+            await space.save();
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    export async function getReservations(token){
+        try {
+            const decoded = verifyToken(token);
+            const pipeline = [
+                { $unwind: "$reservations" },
+                { $project: {
+                    _id: "$reservations._id",
+                    name: 1,
+                    reservationHolder: "$reservations.reservationHolder",
+                    reservationHolderEmail: "$reservations.reservationHolderEmail",
+                    startDate: "$reservations.startDate",
+                    endDate: "$reservations.endDate" 
+                }}
+            ];
+            (!decoded.administrator) ? pipeline.push({ $match: { "reservations.reservationHolderEmail": decoded.email }}) : null;
+            const reservations = await Space.aggregate(pipeline);
+            if(reservations.length == 0){
+                const error = new Error('NotFound: no reservations found');
+                error.status = 404;
+                throw error;
+            }
+            return reservations;
+        } catch (err) {
+            throw err
+        }
+    }
+
+    export async function editReservation(token, reservationId, newStartDate, newEndDate) {
+        try {
+            const decoded = verifyToken(token);
+            const space = await Space.findOne({"reservations._id": reservationId});
+            if (!space) {
+                const error = new Error('NotFound: reservation not found');
+                error.status = 404;
+                throw error;
+            };
+            const reservation = space.reservations.id(reservationId);
+            if (!decoded.administrator && reservation.reservationHolderEmail != decoded.email) {
+                const error = new Error('Unauthorized: only administrators or reservation holders can edit');
+                error.status = 401;
+                throw error;
+            };
+            const startDate = new Date(newStartDate);
+            const endDate = new Date(newEndDate);
+            await verifyOverlapping(space.name, startDate, endDate, reservationId);
+            reservation.startDate = startDate;
+            reservation.endDate = endDate;
+            await space.save();
+        } catch (err) {
+            throw err
+        }
+    };
+
+    export async function deleteReservation(token, reservationId) {
+        try {
+            const decoded = verifyToken(token);
+            const space = await Space.findOne({ "reservations._id": reservationId });
+            if (!space) {
+                const error = new Error('NotFound: reservation not found');
+                error.status = 404;
+                throw error;
+            }
+            const reservation = space.reservations.id(reservationId);
+            if (!decoded.administrator && reservation.reservationHolderEmail != decoded.email) {
+                const error = new Error('Unauthorized: only administrators or reservation holders can delete a reservation');
+                error.status = 401;
+                throw error; 
+            };
+            await Space.updateOne(
+                { "reservations._id": reservationId },
+                { $pull: { reservations: { _id: reservationId } } }
+            );
+        } catch (err) {
+            throw err
         }
     }

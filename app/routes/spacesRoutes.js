@@ -1,5 +1,5 @@
-import { app } from "./index.js";
-import { createSpace, getSpaces, editSpace, deleteSpace } from "./db/dbUtils.js";
+import { app } from "../index.js";
+import { createSpace, getSpaces, editSpace, deleteSpace } from "../db/dbUtils.js";
 
 export async function setSpacesRoutes() {
     /**
@@ -35,7 +35,8 @@ export async function setSpacesRoutes() {
             await createSpace(req.body.userToken, req.body.name, req.body.description, req.body.capacity);
             res.status(200).send('OK: the space was created successfully');
         } catch (error) {
-            res.status(error.status).send(error.message);
+            const status = error.status || 500;
+            res.status(status).send((status == 500) ?  "ServerError: "+error.message : error.message);
         };
     });
     /**
@@ -49,14 +50,17 @@ export async function setSpacesRoutes() {
      *       200:
      *         description: (OK) a list with the spaces in the db
      *       404:
-     *          $ref: '#/components/responses/notFound'   
+     *          $ref: '#/components/responses/notFound'
+     *       500:
+     *          $ref: '#/components/responses/serverError'
      */
     app.get('/spaces', async (req, res) => {
         try {
             const spaces = await getSpaces();
             res.status(200).send(spaces);
         } catch (error) {
-            res.status(error.status).send(error.message);
+            const status = error.status || 500;
+            res.status(status).send((status == 500) ?  "ServerError: "+error.message : error.message);
         };
      });
     /**
@@ -80,7 +84,9 @@ export async function setSpacesRoutes() {
      *       401:
      *          $ref: '#/components/responses/unauthorized'
      *       404:
-     *          $ref: '#/components/responses/notFound'   
+     *          $ref: '#/components/responses/notFound'
+     *       500:
+     *          $ref: '#/components/responses/serverError'
      */
     app.put('/spaces', async (req, res) => {
         try {
@@ -92,7 +98,8 @@ export async function setSpacesRoutes() {
             await editSpace(req.body.userToken, req.body.spaceId, req.body.name, req.body.description, req.body.capacity);
             res.status(200).send('OK: the space was edited successfully');
         } catch (error) {
-            res.status(error.status).send(error.message);
+            const status = error.status || 500;
+            res.status(status).send((status == 500) ?  "ServerError: "+error.message : error.message);
         };
     });
     /**
@@ -116,7 +123,9 @@ export async function setSpacesRoutes() {
      *       401:
      *          $ref: '#/components/responses/unauthorized'
      *       404:
-     *          $ref: '#/components/responses/notFound'   
+     *          $ref: '#/components/responses/notFound'
+     *       500:
+     *          $ref: '#/components/responses/serverError'  
      */
     app.delete('/spaces', async (req, res) => {
         try {
@@ -128,7 +137,8 @@ export async function setSpacesRoutes() {
             await deleteSpace(req.body.userToken, req.body.spaceId);
             res.status(200).send('OK: the space was deleted successfully');
         } catch (error) {
-            res.status(error.status).send(error.message);
+            const status = error.status || 500;
+            res.status(status).send((status == 500) ?  "ServerError: "+error.message : error.message);
         };
     });
 }

@@ -46,26 +46,22 @@ export const Space = mongoose.model('Space', new mongoose.Schema({
         type: Number,
         required: true
     },
-    availability: {
+    reservations: {
         type: [{
-            date: {
+            reservationHolder: {
+                type: String,
+                required: true
+            },
+            reservationHolderEmail: {
+                type: String,
+                required: true
+            },
+            startDate: {
                 type: Date,
                 required: true
             },
-            start_HH: {
-                type: String,
-                required: true
-            },
-            start_MM: {
-                type: String,
-                required: true
-            },
-            end_HH: {
-                type: String,
-                required: true
-            },
-            end_MM: {
-                type: String,
+            endDate: {
+                type: Date,
                 required: true
             }
         }], 
