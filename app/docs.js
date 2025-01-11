@@ -171,11 +171,70 @@ export function setDocs() {
                                 description: 'id of the space'
                             }
                         }
+                    },
+                    createReservationBody:{
+                        type: 'object',
+                        properties:{
+                            userToken:{
+                                type: 'string',
+                                required: true
+                            },
+                            spaceName:{
+                                type: 'string',
+                                required: true
+                            },
+                            startDate:{
+                                type: 'string',
+                                default: 'YYYY-MM-DDTHH:mm',
+                                required: true
+                            },
+                            endDate:{
+                                type: 'string',
+                                default: 'YYYY-MM-DDTHH:mm',
+                                required: true
+                            }
+                        }
+                    },
+                    editReservationBody: {
+                        type: 'object',
+                        properties: {
+                            userToken:{
+                                type: 'string',
+                                required: true
+                            },
+                            reservationId:{
+                                type: 'string',
+                                required: true
+                            },
+                            newStartDate:{
+                                type: 'string',
+                                default: 'YYYY-MM-DDTHH:mm',
+                                required: true
+                            },
+                            newEndDate:{
+                                type: 'string',
+                                default: 'YYYY-MM-DDTHH:mm',
+                                required: true
+                            }
+                        }
+                    },
+                    deleteReservationBody: {
+                        type: 'object',
+                        properties: {
+                            userToken:{
+                                type: 'string',
+                                required: true
+                            },
+                            reservationId:{
+                                type: 'string',
+                                required: true
+                            }
+                        }
                     }
                 }
             }
         },
-        apis: ['./app/usersRoutes.js', './app/spacesRoutes.js']
+        apis: ['./app/routes/usersRoutes.js', './app/routes/spacesRoutes.js', './app/routes/reservationsRoutes.js']
     };
     const rsmApiSpecification = swaggerJsdoc(options);
     app.use('/', swaggerUi.serve, swaggerUi.setup(rsmApiSpecification));
