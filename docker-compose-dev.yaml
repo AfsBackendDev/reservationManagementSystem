@@ -13,7 +13,7 @@ services:
     volumes:
       - ./app:/home/app/app
   mongodb_container:
-    image: mongo
+    image: mongo:8.0
     environment:
       - MONGO_INITDB_ROOT_USERNAME=your-db-user
       - MONGO_INITDB_ROOT_PASSWORD=your-db-password

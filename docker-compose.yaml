@@ -9,7 +9,7 @@ services:
     - SECRET_KEY=your-secret-key
     - MONGODB_URI=mongodb://your-db-user:your-db-password@mongodb_container:27017/miapp?authSource=admin
   mongodb_container:
-    image: mongo
+    image: mongo:8.0
     environment:
       - MONGO_INITDB_ROOT_USERNAME=your-db-user
       - MONGO_INITDB_ROOT_PASSWORD=your-db-password

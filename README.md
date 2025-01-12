@@ -6,13 +6,14 @@ This project is a RESTful API that allows users to manage spaces and reservation
 ---
 
 ## Technologies Used
-- **Node.js**: For the backend.
-- **Express**: Framework for building the API.
-- **MongoDB**: Database to persist users, spaces, and reservations.
-- **JWT**: Token-based authentication.
-- **Nginx**: Reverse proxy to handle HTTP traffic.
-- **Docker**: Containerization of the backend, database, and proxy.
-- **Swagger**: Documentation of the API.
+- **Node.js 22.12.0**: For the backend.
+- **Express ^4.21.2**: Framework for building the API.
+- **MongoDB 8.0**: Database to persist users, spaces, and reservations.
+- **JsonWebToken ^9.0.2**: Token-based authentication.
+- **Nginx 1.27.3**: Reverse proxy to handle HTTP traffic.
+- **Docker 27.4.1**: Containerization of the backend, database, and proxy.
+- **SwaggerJsDoc ^6.2.8**: Documentation of the API.
+- **SwaggerUIExpress ^5.0.1**: UI for the API documentation.
 - **GitHub actions**: CI/CD deployment with azure
 
 ---
@@ -30,7 +31,7 @@ This project is a RESTful API that allows users to manage spaces and reservation
    cd reservationManagementSystem
    ```
 
-2. Change the following variables in the docker-compose files:
+2. Change the following variables in the docker-compose files in the root directory:
    ```yaml
     express_container:
         ports:
@@ -53,7 +54,7 @@ This project is a RESTful API that allows users to manage spaces and reservation
     ```bash
     docker compose -f docker-compose-dev.yaml up --build
     ```
-    >**Note:** if you use the dev option when restarting the container the changes on the app folder will be reflected
+    >**Note:** if you use the dev option changes on the app folder will be reflected when restarting the conatiner
 
 4. The API will be available at `http://localhost:your-desired-port`.
 
@@ -74,11 +75,11 @@ This project is a RESTful API that allows users to manage spaces and reservation
 
 #### Users List
 - **GET/users**
-  - **Description:** Return a list with al the users from the DB.
+  - **Description:** Return a list with all the users from the DB.
 
 #### User Delete
 - **DELETE/users/delete**
-  - **Description:** Delete an user from the DB.
+  - **Description:** Delete a user from the DB.
 
 ### Space Management
 
