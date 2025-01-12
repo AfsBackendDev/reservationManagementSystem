@@ -4,18 +4,19 @@ services:
       context: .
       dockerfile: DockerFile.dev
     ports:
-      - "3001:3001"
+      - "3001:3000"
     links:
       - mongodb_container
     environment:
-      - SECRET_KEY=asdfsdfvhgh1156165165dgdg616156
+      - SECRET_KEY=your-secret-key
+      - MONGODB_URI=mongodb://your-db-user:your-db-password@mongodb_container:27017/miapp?authSource=admin
     volumes:
       - ./app:/home/app/app
   mongodb_container:
     image: mongo
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=root
-      - MONGO_INITDB_ROOT_PASSWORD=password
+      - MONGO_INITDB_ROOT_USERNAME=your-db-user
+      - MONGO_INITDB_ROOT_PASSWORD=your-db-password
     volumes:
       - rms_mongo_volume:/data/db
 volumes:
