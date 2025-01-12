@@ -60,7 +60,7 @@ This project is a RESTful API that allows users to manage spaces and reservation
 ---
 
 ## Endpoints
->**Note:** You can see more detailed documentation of the API and perform tests at reservationManagementSystem.afsBackendDev.site
+>**Note:** You can see more detailed documentation of the API and perform tests at reservationManagementSystem.afsBackendDev.site or at http://127.0.0.1:your-desired-port/
 
 ### Authentication
 
