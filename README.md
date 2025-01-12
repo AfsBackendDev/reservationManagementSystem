@@ -198,4 +198,6 @@ Use **Postman** or **Insomnia** to test the endpoints. You can also test the API
 ---
 
 ## License
-This project is licensed under the MIT License.
+This project is licensed under the GNU General Public License v3.0 - see the [LICENSE.md](LICENSE.md) file for details.
+
+© 2025 Andrés Felipe Sarmiento Niño. All rights reserved.
