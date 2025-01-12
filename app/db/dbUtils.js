@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { User, Space } from "./models.js";
 import { createToken, verifyToken } from "../tokens/tokenUtils.js";
 
-mongoose.connect('mongodb://root:password@mongodb_container:27017/miapp?authSource=admin');
+mongoose.connect(process.env.MONGODB_URI);
 
 //USER FUNCTIONS
     export async function userRegister(first_name = String, second_name = String, first_last_name = String, second_last_name = String, email = String, password = String, administrator = Boolean) {

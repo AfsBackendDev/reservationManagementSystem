@@ -6,7 +6,7 @@ import { setSpacesRoutes } from './routes/spacesRoutes.js'
 import { setReservationsRoutes } from './routes/reservationsRoutes.js';
 
 export const app = express();
-const port = 3001;
+const port = 3000;
 app.use(cors({
     origin: '*'
 }));
