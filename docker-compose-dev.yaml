@@ -9,7 +9,7 @@ services:
       - mongodb_container
     environment:
       - SECRET_KEY=your-secret-key
-      - MONGODB_URI=mongodb://your-db-user:your-db-password@mongodb_container:27017/miapp?authSource=admin
+      - MONGODB_URI=mongodb://your-db-user:your-db-password@mongodb_container:27017/myapp?authSource=admin
     volumes:
       - ./app:/home/app/app
   mongodb_container:

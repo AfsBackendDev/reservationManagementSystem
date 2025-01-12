@@ -1,7 +1,7 @@
 # Reservation Management System
 
 ## Description
-This project is a RESTful API that allows users to manage spaces and reservations. It includes JWT authentication, Docker containers, and a reverse proxy with Nginx.
+A robust RESTful API for managing spaces and reservations with secure JWT authentication. This system utilizes containerized environments with Docker and employs an Nginx reverse proxy for efficient traffic management.
 
 ---
 
@@ -38,7 +38,7 @@ This project is a RESTful API that allows users to manage spaces and reservation
           - "your-desired-port:3000"
         environment:
         - SECRET_KEY=your-jwt-secret-key
-        - MONGODB_URI=mongodb://your-db-user:your-db-password@mongodb_container:27017/miapp?authSource=admin
+        - MONGODB_URI=mongodb://your-db-user:your-db-password@mongodb_container:27017/myapp?authSource=admin
     mongodb_container:
         environment:
         - MONGO_INITDB_ROOT_USERNAME=your-db-user
@@ -54,70 +54,70 @@ This project is a RESTful API that allows users to manage spaces and reservation
     ```bash
     docker compose -f docker-compose-dev.yaml up --build
     ```
-    >**Note:** if you use the dev option changes on the app folder will be reflected when restarting the conatiner
+    >**Note:** if you use the dev option changes on the app folder will be reflected when restarting the container
 
 4. The API will be available at `http://localhost:your-desired-port`.
 
 ---
 
 ## Endpoints
->**Note:** You can see more detailed documentation of the API and perform tests at reservationManagementSystem.afsBackendDev.site or at http://127.0.0.1:your-desired-port/
+>**Note:** You can see more detailed documentation of the API and perform tests at https://reservationManagementSystem.afsBackendDev.site or at http://127.0.0.1:your-desired-port/
 
 ### Authentication
 
 #### User Registration
 - **POST /users/register**
-  - **Description:** Creates a new user.
+  **Description:** Creates a new user.
 
 #### User Login
 - **POST /users/login**
-  - **Description:** Authenticates the user and generates a JWT.
+  **Description:** Authenticates the user and generates a JWT.
 
 #### Users List
 - **GET/users**
-  - **Description:** Return a list with all the users from the DB.
+  **Description:** Return a list with all the users from the DB.
 
 #### User Delete
 - **DELETE/users/delete**
-  - **Description:** Delete a user from the DB.
+  **Description:** Delete a user from the DB.
 
 ### Space Management
 
-#### Create a Space
+#### Create Space
 - **POST /spaces** *(JWT with admin role required)*
-  - **Description:** create a new space.
+  **Description:** create a new space.
 
 #### List Spaces
 - **GET /spaces**
-  - **Description:** Returns a list of spaces.
+  **Description:** Returns a list of spaces.
 
-#### Edit a Space
+#### Edit Space
 - **PUT /spaces** *(JWT with admin role required)*
-  - **Description:** Edit a space.
+  **Description:** Edit a space.
 
-#### Delete a Space
+#### Delete Space
 - **DELETE /spaces** *(JWT with admin role required)*
-  - **Description:** Delete a space.
+  **Description:** Delete a space.
 
 ### Reservation Management
 
 #### Create a Reservation
 - **POST /reservations** *(JWT required)*
-  - **Description:** Create a new reservation.
+  **Description:** Create a new reservation.
 
 #### List Reservations
 - **GET /reservations** *(JWT required)*
-  - **Description:** Returns a list of reservations.
+  **Description:** Returns a list of reservations.
   >**Details:** this endpoint returns a list with all reservations if the user is administrator. If not, returns a list with the user reservations.
 
 #### Edit a Reservation
 - **PUT /reservations** *(JWT required)*
-  - **Description:** Edit a reservation.
+  **Description:** Edit a reservation.
   >**Details:** just the reservation holder or an administrator can edit reservations.
 
 #### Delete a Reservation
 - **DELETE /reservations** *(JWT required)*
-  - **Description:** Delete a reservation.
+  **Description:** Delete a reservation.
   >**Details:** just the reservation holder or an administrator can delete reservations.
 
 ---
@@ -153,6 +153,48 @@ This project is a RESTful API that allows users to manage spaces and reservation
 ## Testing
 Use **Postman** or **Insomnia** to test the endpoints. You can also test the API using **Swagger** at `http://127.0.0.1:your-desired-port/`.
 
+---
+
+## Deployment
+
+### Prerequisites
+- virtual machine with the following dependencies.
+  - **Docker Desktop**. https://docs.docker.com/
+  - **Git**. https://git-scm.com/doc
+  - **Password.pem**
+    >**Note:** this file is used to connect to your vm. You can download it from your vm or create it in your vm and it is not necessary that the name be "Password.pem".
+
+### Steps
+1. Clone the repository in the VM:
+   ```bash
+   git clone https://github.com/AfsBackendDev/reservationManagementSystem.git
+   cd reservationManagementSystem
+   ```
+2. Create and run the containers.
+   ```bash
+   docker compose up --build
+   ```
+3. The API will be available at `http://your-vm-public-ip:your-desired-port`.
+
+>**Note:** you need to open your desired port on your vm or use nginx as a reverse proxy.
+
+### Details
+- #### CI/CD
+  You can integrate github actions to automate the deployment process using the following file `rootDirectory/github/workflows/publish.yaml`
+  **Steps**
+    - Create a new repository in GitHub with the branch "main" as default.
+    - Create a new secret called "MY_PEM_KEY" this secret will be the private key of your vm.
+    - Create a new secret called "SSH_USER" this secret will be the user of your vm.
+    - Create a new secret called "SSH_HOST" this secret will be the public ip of your vm.
+    - Change the name of the repository at `rootDirectory/github/workflows/publish.yaml` in the line 34 for the name of your repository. For example
+      ```bash
+      cd your-new-repository-name/
+      ```
+    - Run the following commands in your vm with ssh.
+      ```bash
+      git clone https://github.com/your-new-repository-name.git
+      ```
+    - Now when you perform a push in your main branch the changes will be deployed automatically.
 ---
 
 ## License
