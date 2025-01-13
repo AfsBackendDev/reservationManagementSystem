@@ -48,6 +48,7 @@ A robust RESTful API for managing spaces and reservations with secure JWT authen
    ```
    
 3. Build and start the containers:
+    
     **for production**
     ```bash
     docker compose up --build
