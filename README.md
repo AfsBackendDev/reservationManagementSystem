@@ -1,4 +1,6 @@
-# Reservation Management System
+<img src="./ReservationManagementRESTfulAPI.logo.png" style="width: 90%; display: block; margin-left: auto; margin-right: auto; border-radius: 20px;">
+
+## Reservation Management RESTful API
 
 ## Description
 A robust RESTful API for managing spaces and reservations with secure JWT authentication. This system utilizes containerized environments with Docker and employs an Nginx reverse proxy for efficient traffic management.
