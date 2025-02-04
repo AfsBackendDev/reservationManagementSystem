@@ -4,7 +4,8 @@
   "description": "Backend application that allow users to register, search for avaible spaces, make reservations and manage them",
   "main": "./app/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app/index.js"
   },
   "repository": {
     "type": "git",
