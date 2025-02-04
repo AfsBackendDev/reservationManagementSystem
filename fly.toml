@@ -1,0 +1,41 @@
+app = "mi-app"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[[services]]
+  internal_port = 3000
+  protocol = "tcp"
+
+  [services.concurrency]
+    type = "connections"
+    hard_limit = 100
+    soft_limit = 50
+
+  [[services.ports]]
+    handlers = ["http"]
+    port = 80
+  [[services.ports]]
+    handlers = ["tls"]
+    port = 443
+
+  [services.env]
+    SECRET_KEY = "your-secret-key"
+    MONGODB_URI = "mongodb://your-db-user:your-db-password@mongodb.internal:27017/myapp?authSource=admin"
+
+[[mounts]]
+  source = "mongodb_data"
+  destination = "/data/db"
+
+[[services]]
+  internal_port = 27017
+  protocol = "tcp"
+
+  [services.concurrency]
+    type = "connections"
+    hard_limit = 100
+    soft_limit = 50
+
+  [services.env]
+    MONGO_INITDB_ROOT_USERNAME = "your-db-user"
+    MONGO_INITDB_ROOT_PASSWORD = "your-db-password"
