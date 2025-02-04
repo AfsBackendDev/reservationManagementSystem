@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: reservationManagementSystem
+    env: docker
+    repo: https://github.com/AfsBackendDev/reservationManagementSystem
+    plan: free
+    dockerCommand: "docker-compose up"
